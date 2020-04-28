@@ -111,7 +111,15 @@ def execute_search(artist_name, album_name):
     return track_ids
 
 def add_to_playlist(track_ids):
+        
     spotifyObject.user_playlist_add_tracks(USERNAME, PLAYLIST_ID, 
                                            track_ids, position=None)
 
+def current_tracks(playlist_id):
+    tracks = spotifyObject.playlist_tracks(playlist_id)
+    tracks = tracks['items']
+    
+    has_ids = [t['track']['name'] for t in tracks]
+    
 
+    return has_ids

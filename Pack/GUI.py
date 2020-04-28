@@ -13,7 +13,7 @@ from tkinter import messagebox
 
 num_rows = 6
 num_cols = 1
-row_min = 150
+row_min = 100
 frame_bg = '#3DC461'
 
 month = '2020-04'
@@ -42,7 +42,7 @@ class Body(SmallHeader):
     ipadx = 50
     ipady = 50
     
-    font = ("Bahnschrift SemiLight", 10) 
+    font = ("Bahnschrift SemiLight", 8) 
     
 class BodyBold(Body):
     font = ("Bahnschrift SemiLight", 12, 'bold') 
@@ -120,11 +120,10 @@ class OpenPage(tk.Frame):
                         borderwidth=4, relief="solid",
                         font=Body.font)
         body.grid()
-        #ipadx=Body.ipadx, ipady=Body.ipady
-        
+
         self.check_dict = {}
         
-        self.entries = self.retrieve_entries2()
+        self.entries = self.retrieve_entries()
         
         
         
@@ -141,6 +140,8 @@ class OpenPage(tk.Frame):
         checkall.config(padx=10, width=10)
             
         self.cbs = []
+        
+
         
         
         
@@ -183,19 +184,9 @@ class OpenPage(tk.Frame):
                            font=Button.font,
                            command=self.check_vals)
         button.grid()
-        
-    def retrieve_entries(self):
-        entries = get_albums.find_albums(page, month)
-        entries = add_spotify.apply_extend(entries)
             
-        formatted = (entry.artist + ' | ' + entry.album + ' | ' +
-                     entry.genres for entry in entries)
-        
-        
-        return formatted
-    
 
-    def retrieve_entries2(self) :
+    def retrieve_entries(self) :
         entries = get_albums.find_albums(page, month)
         entries = add_spotify.apply_extend(entries)
         
@@ -209,24 +200,14 @@ class OpenPage(tk.Frame):
         for k, v in self.check_dict.items():
             if v.get():
                 try:
-                    self.process_line2(k)
+                    self.process_line(k)
                 except (add_spotify.ArtistError, add_spotify.AlbumError) as ex:
                     message += (str(ex) + '\n') 
         
-        tk.messagebox.showinfo('Warning', message)
-
-                
-    def process_line(self, line):
-        
-        split = line.split(' | ')
-        artist = split[0]
-        album = split[1]
-        
-                
-        track_ids = add_spotify.execute_search(artist, album)
-        add_spotify.add_to_playlist(track_ids)
+        if message:
+            messagebox.showinfo('Warning', message)
             
-    def process_line2(self, line):
+    def process_line(self, line):
         
         track_ids = add_spotify.execute_search(line.artist, line.album)
         add_spotify.add_to_playlist(track_ids)
@@ -243,4 +224,15 @@ class OpenPage(tk.Frame):
         
 
 app = AdderApp()
+width  = int(app.winfo_screenwidth()/2)
+height = int(app.winfo_screenheight()/1.1)
+w = app.winfo_reqwidth()
+h = app.winfo_reqheight()
+
+x = int((width) - (w/4))
+y = int((height/4) - (h))
+
+app.geometry(f'{width}x{height}+{x}+{y}')
+
 app.mainloop()
+

@@ -5,26 +5,34 @@ Created on Wed Mar 25 15:48:21 2020
 @author: George
 """
 
-
 from bs4 import BeautifulSoup
 import requests
 from collections import namedtuple
-
+from datetime import datetime
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36',
     }
 
-#month = input('Enter the month you would like to see (YYYY-MM): ')
-month = '2020-04'
+
+def current_month(format):
+    """Returns current month in specified format"""
+
+    now = datetime.utcnow()
+    return datetime.strftime(now, format)
+
+
+month = current_month('%Y-%m')
 page = 'https://downbeat.com/reviews/editorspicks/'
 
 
 def find_albums(page, month):
+
+    """Gets a list of albums featured on specified page for a specified month"""
     
     page = page + month
     
-    res = requests.get(page, headers = headers, verify=False)
+    res = requests.get(page, headers=headers, verify=False)
     if res.status_code != 200:
         print('Web site does not exist') 
     res.raise_for_status()
@@ -48,7 +56,8 @@ def find_albums(page, month):
 
 def process_albums(pairs):
 
-    
+    """Puts album results into a named tuple"""
+
     AlbumTup = namedtuple('AlbumTup', 'artist album')
     album_tups = (AlbumTup(*pair) for pair in pairs)
     

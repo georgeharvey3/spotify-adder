@@ -5,18 +5,24 @@ Created on Mon Apr 20 17:34:37 2020
 @author: George
 """
 
+import os
 import tkinter as tk
-import get_albums
-import add_spotify
 from tkinter import messagebox
 
+if os.getcwd() != os.path.dirname(os.path.abspath(__file__)):
+    import get_albums
+    import add_spotify
+
+else:
+    import Pack.get_albums as get_albums
+    import Pack.add_spotify as add_spotify
 
 num_rows = 6
 num_cols = 1
 row_min = 100
 frame_bg = '#3DC461'
 
-month = '2020-04'
+month = '2020-05'
 page = 'https://downbeat.com/reviews/editorspicks/'
 
 
@@ -124,9 +130,7 @@ class OpenPage(tk.Frame):
         self.check_dict = {}
         
         self.entries = self.retrieve_entries()
-        
-        
-        
+
         for cat in enumerate(('Artist', 'Album', 'Genres')):     
             descriptor = tk.Label(body, text = cat[1],
                                 bg=Body.bg, fg=Body.fg, font=BodyBold.font)
@@ -224,12 +228,12 @@ class OpenPage(tk.Frame):
         
 
 app = AdderApp()
-width  = int(app.winfo_screenwidth()/2)
+width  = int(app.winfo_screenwidth()/1.6)
 height = int(app.winfo_screenheight()/1.1)
 w = app.winfo_reqwidth()
 h = app.winfo_reqheight()
 
-x = int((width) - (w/4))
+x = int((width/4) - (w))
 y = int((height/4) - (h))
 
 app.geometry(f'{width}x{height}+{x}+{y}')

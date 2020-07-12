@@ -8,6 +8,7 @@ Created on Mon Apr 20 17:34:37 2020
 import os
 import tkinter as tk
 from tkinter import messagebox
+from datetime import datetime
 
 if os.getcwd() != os.path.dirname(os.path.abspath(__file__)):
     import get_albums
@@ -22,7 +23,14 @@ num_cols = 1
 row_min = 100
 frame_bg = '#3DC461'
 
-month = '2020-05'
+
+def current_month(format):
+    """Returns current month in specified format"""
+
+    now = datetime.utcnow()
+    return datetime.strftime(now, format)
+
+month = current_month('%Y-%m')
 page = 'https://downbeat.com/reviews/editorspicks/'
 
 

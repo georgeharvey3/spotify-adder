@@ -15,17 +15,6 @@ headers = {
     }
 
 
-def current_month(format):
-    """Returns current month in specified format"""
-
-    now = datetime.utcnow()
-    return datetime.strftime(now, format)
-
-
-month = current_month('%Y-%m')
-page = 'https://downbeat.com/reviews/editorspicks/'
-
-
 def find_albums(page, month):
 
     """Gets a list of albums featured on specified page for a specified month"""
